@@ -10,7 +10,7 @@
 // First drive being used for floppies, and the last drive.  Used for calculating
 // step and direction pins.
 const byte FIRST_DRIVE = 1;
-const byte LAST_DRIVE = 8;  // This sketch can handle only up to 9 drives (the max for Arduino Uno)
+const byte LAST_DRIVE = 14;  // This sketch can handle only up to 9 drives (the max for Arduino Uno)
 
 // Maximum note number to attempt to play on floppy drives.  It's possible higher notes may work,
 // but they may also cause instability.
@@ -28,25 +28,25 @@ const byte MAX_FLOPPY_NOTE = 71;
  NOTE: Index zero of this array controls the "resetAll" function, and should be the
  same as the largest value in this array
  */
-unsigned int FloppyDrives::MAX_POSITION[] = {158,158,158,158,158,158,158,158,158,158};
+unsigned int FloppyDrives::MAX_POSITION[] = {158,158,158,158,158,158,158,158,158,158,158,158,158,158,158,158};
 
 //Array to track the current position of each floppy head.
-unsigned int FloppyDrives::currentPosition[] = {0,0,0,0,0,0,0,0,0,0};
+unsigned int FloppyDrives::currentPosition[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 /*Array to keep track of state of each pin.  Even indexes track the control-pins for toggle purposes.  Odd indexes
  track direction-pins.  LOW = forward, HIGH=reverse
  */
-int FloppyDrives::currentState[] = {0,0,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW};
+int FloppyDrives::currentState[] = {0,0,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW};
 
 // Current period assigned to each drive.  0 = off.  Each period is two-ticks (as defined by
 // TIMER_RESOLUTION in MoppyInstrument.h) long.
-unsigned int FloppyDrives::currentPeriod[] = {0,0,0,0,0,0,0,0,0,0};
+unsigned int FloppyDrives::currentPeriod[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 // Tracks the current tick-count for each drive (see FloppyDrives::tick() below)
-unsigned int FloppyDrives::currentTick[] = {0,0,0,0,0,0,0,0,0,0};
+unsigned int FloppyDrives::currentTick[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 // The period originally set by incoming messages (prior to any modifications from pitch-bending)
-unsigned int FloppyDrives::originalPeriod[] = {0,0,0,0,0,0,0,0,0,0};
+unsigned int FloppyDrives::originalPeriod[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 void FloppyDrives::setup() {
 
@@ -69,6 +69,18 @@ void FloppyDrives::setup() {
   pinMode(17, OUTPUT); // Direction 8
   pinMode(18, OUTPUT); // Direction 9
   pinMode(19, OUTPUT); // Step control 9
+  pinMode(20, OUTPUT); // Direction 10
+  pinMode(21, OUTPUT); // Step control 10
+  pinMode(22, OUTPUT); // Direction 11
+  pinMode(23, OUTPUT); // Step control 11
+  pinMode(24, OUTPUT); // Direction 12
+  pinMode(25, OUTPUT); // Step control 12
+  pinMode(26, OUTPUT); // Direction 13
+  pinMode(27, OUTPUT); // Step control 13
+  pinMode(28, OUTPUT); // Direction 14
+  pinMode(29, OUTPUT); // Step control 14
+  pinMode(30, OUTPUT); // Direction 15
+  pinMode(31, OUTPUT); // Step control 15
 
 
   // With all pins setup, let's do a first run reset
@@ -234,6 +246,48 @@ void FloppyDrives::tick()
     if (currentTick[9] >= currentPeriod[9]){
       togglePin(9,18,19);
       currentTick[9]=0;
+    }
+  }
+  if (currentPeriod[10]>0){
+    currentTick[10]++;
+    if (currentTick[10] >= currentPeriod[10]){
+      togglePin(10,20,21);
+      currentTick[10]=0;
+    }
+  }
+  if (currentPeriod[11]>0){
+    currentTick[11]++;
+    if (currentTick[11] >= currentPeriod[11]){
+      togglePin(11,22,23);
+      currentTick[11]=0;
+    }
+  }
+  if (currentPeriod[12]>0){
+    currentTick[12]++;
+    if (currentTick[12] >= currentPeriod[12]){
+      togglePin(12,24,25);
+      currentTick[12]=0;
+    }
+  }
+  if (currentPeriod[13]>0){
+    currentTick[13]++;
+    if (currentTick[13] >= currentPeriod[13]){
+      togglePin(13,26,27);
+      currentTick[13]=0;
+    }
+  }
+  if (currentPeriod[14]>0){
+    currentTick[14]++;
+    if (currentTick[14] >= currentPeriod[14]){
+      togglePin(14,28,29);
+      currentTick[14]=0;
+    }
+  }
+  if (currentPeriod[15]>0){
+    currentTick[15]++;
+    if (currentTick[15] >= currentPeriod[15]){
+      togglePin(15,30,31);
+      currentTick[15]=0;
     }
   }
 }
